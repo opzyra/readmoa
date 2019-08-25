@@ -14,7 +14,7 @@ export default class PostOkky {
   @Column({ length: 400 })
   description!: String;
 
-  @Column({ length: 255 })
+  @Column({ length: 500 })
   url!: String;
 
   @Column("datetime")
