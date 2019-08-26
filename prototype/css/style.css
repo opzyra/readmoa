@@ -1,0 +1,55 @@
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(163, 63, 165, 0.9),
+    rgba(97, 50, 160, 0.9)
+  );
+  width: 112px;
+  height: 100vh;
+}
+
+header > .logo {
+  display: block;
+  text-align: center;
+  padding: 28px 0;
+  margin-bottom: 40px;
+}
+
+header > .logo img {
+  width: 80px;
+}
+
+header > .logo h3 {
+  font-size: 16px;
+  color: #fff;
+}
+
+header ul a {
+  display: block;
+  text-align: center;
+  padding: 12px 0px;
+  height: 64px;
+  position: relative;
+}
+
+header ul a.on::after {
+  content: " ";
+  height: 64px;
+  width: 4px;
+  background: #fff;
+  position: absolute;
+  left: 0px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+header ul a img {
+  width: 64px;
+}
+main {
+  margin-left: 112px;
+  padding: 28px;
+}
