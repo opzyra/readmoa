@@ -8,6 +8,8 @@ import { createConnection } from "typeorm";
 import routes from "./routes";
 import { endpoint, error } from "./core/errorHandler";
 
+import parsing from "./batch";
+
 const app = express();
 
 app.use(bodyParser.json());
@@ -18,6 +20,7 @@ app.use(endpoint, error);
 
 const initialize = async function() {
   await createConnection();
+  parsing();
 };
 
 initialize();

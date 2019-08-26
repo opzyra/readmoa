@@ -5,11 +5,9 @@ import { EntityManager } from "typeorm";
 
 import PostOkky from "../model/PostOkky";
 import { txfn } from "../core/txManager";
+import ParsingReport from "../model/ParsingReport";
 
-const parsing = async (em: EntityManager, category: String) => {
-  const tbd = moment()
-    .subtract(1, "day")
-    .format("YYYYMMDD");
+const parsing = async (em: EntityManager, category: string, tbd: string) => {
   const domain = "https://okky.kr";
   const target = `${domain}/articles/${category}?offset=0&max=100&sort=id&order=desc`;
 
@@ -64,11 +62,37 @@ const parsing = async (em: EntityManager, category: String) => {
   }
 
   await browser.close();
+
+  return list.length;
 };
 
 const okky = txfn(async (em: EntityManager) => {
-  await parsing(em, "community");
-  await parsing(em, "questions");
+  const tbd = moment()
+    .subtract(1, "day")
+    .format("YYYYMMDD");
+
+  const pr = await em
+    .createQueryBuilder()
+    .from(ParsingReport, "parsing_report")
+    .where(`standard_date=:standard_date AND platform = 'OKKY'`, {
+      standard_date: tbd
+    })
+    .getOne();
+
+  if (pr) {
+    return;
+  }
+
+  let count = 0;
+  count += await parsing(em, "community", tbd);
+  count += await parsing(em, "questions", tbd);
+
+  let parsingReport = new ParsingReport();
+  parsingReport.platform = "OKKY";
+  parsingReport.row = count;
+  parsingReport.standard_date = tbd;
+
+  await em.save(parsingReport);
 });
 
 export default okky;
