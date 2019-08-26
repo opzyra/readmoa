@@ -6,17 +6,17 @@ export default class PostOkky {
   idx!: number;
 
   @Column({ length: 255 })
-  name!: String;
+  name!: string;
 
   @Column({ length: 255 })
-  title!: String;
+  title!: string;
 
   @Column({ length: 400 })
-  description!: String;
+  description!: string;
 
   @Column({ length: 500 })
-  url!: String;
+  url!: string;
 
-  @Column("datetime")
+  @Column("timestamp")
   writed_at!: Date;
 }
