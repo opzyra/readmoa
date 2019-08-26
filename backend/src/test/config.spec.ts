@@ -15,9 +15,10 @@ describe("# 테스트 환경 초기화", () => {
 
   it("테스트 데이터베이스에 연결이 되어있다.", async () => {
     const conn = getConnection();
-    expect(conn.options.database).to.equal("readmoa_test");
     const em = getManager();
     const [rs] = await em.query("SELECT 1+1");
+
+    expect(conn.options.database).to.equal("readmoa_test");
     expect(rs).not.null;
   });
 });

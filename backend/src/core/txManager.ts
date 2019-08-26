@@ -1,5 +1,6 @@
 import { getConnection } from "typeorm";
 import { Request, Response, NextFunction } from "express";
+import logger from "./logger";
 
 const txrt = (fn: Function) => {
   return async (req: Request, res: Response, next: NextFunction) => {
@@ -15,7 +16,6 @@ const txrt = (fn: Function) => {
       })
       .catch(async (error: Error) => {
         await qrn.rollbackTransaction();
-        console.log(error);
         next(error);
       })
       .finally(async () => {
@@ -38,7 +38,7 @@ const txfn = (fn: Function) => {
       })
       .catch(async (error: Error) => {
         await qrn.rollbackTransaction();
-        console.log(error);
+        logger.error(error.stack || "No stack message");
       })
       .finally(async () => {
         await qrn.release();
