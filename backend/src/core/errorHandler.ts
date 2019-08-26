@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from "express";
+import logger from "./logger";
 
 const endpoint = (req: Request, res: Response, next: NextFunction) => {
-  res.status(404).json({ message: "잘못된 접근 입니다." });
+  res.status(404).json({ message: "Not Found" });
 };
 
 const error = (
@@ -10,7 +11,8 @@ const error = (
   res: Response,
   next: NextFunction
 ) => {
-  res.status(500).json({ message: "시스템 오류가 발생하였습니다." });
+  logger.error(error.stack || "No stack message");
+  res.status(500).json({ message: "System Error Occurred" });
 };
 
 export { endpoint, error };

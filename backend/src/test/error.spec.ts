@@ -11,7 +11,7 @@ describe("# 에러 핸들링 테스트", () => {
         .expect(404)
         .then(res => {
           const { message } = res.body;
-          expect(message).to.equal("잘못된 접근 입니다.");
+          expect(message).to.equal("Not Found");
         });
     });
   });
@@ -29,7 +29,7 @@ describe("# 에러 핸들링 테스트", () => {
         .expect(500)
         .then(res => {
           const { message } = res.body;
-          expect(message).to.equal("시스템 오류가 발생하였습니다.");
+          expect(message).to.equal("System Error Occurred");
         });
     });
   });
