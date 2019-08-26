@@ -69,8 +69,8 @@ const parsing = async (em: EntityManager) => {
   await browser.close();
 };
 
-const velog = txfn(async (em: EntityManager) => {
+const brunch = txfn(async (em: EntityManager) => {
   await parsing(em);
 });
 
-export default velog;
+export default brunch;
