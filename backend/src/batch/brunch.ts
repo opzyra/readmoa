@@ -54,6 +54,7 @@ const parsing = async (em: EntityManager, tbd: string) => {
         .trim();
       post.description = $('meta[property="og:description"]')
         .attr("content")
+        .replace(/ +/g, " ")
         .trim();
       post.url = $('meta[property="og:url"]').attr("content");
       post.writed_at = moment(time)
