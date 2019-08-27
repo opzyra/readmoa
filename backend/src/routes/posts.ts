@@ -16,15 +16,21 @@ router.get(
       next: NextFunction,
       em: EntityManager
     ) => {
-      const { skip = 0 } = req.query;
+      let { skip = 0 } = req.query;
 
-      const posts = await em.find(PostOkky, {
+      const [posts, postsCount] = await em.findAndCount(PostOkky, {
         order: { writed_at: "DESC" },
         skip,
-        take: 20
+        take: 27
       });
+      skip = parseInt(skip) + posts.length;
+      const isNext = skip < postsCount;
 
-      res.json(posts);
+      res.json({
+        posts,
+        skip,
+        isNext
+      });
     }
   )
 );
