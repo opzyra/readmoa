@@ -3,9 +3,11 @@ import cheerio from "cheerio";
 import moment from "moment";
 import { EntityManager } from "typeorm";
 
-import PostOkky from "../model/PostOkky";
 import { txfn } from "../core/txManager";
-import ParsingReport from "../model/ParsingReport";
+import { ellipsisString } from "../lib/utils";
+
+import PostOkky from "../model/PostOkky";
+import ReportParsing from "../model/ReportParsing";
 
 const parsing = async (em: EntityManager, category: string, tbd: string) => {
   const domain = "https://okky.kr";
@@ -43,17 +45,17 @@ const parsing = async (em: EntityManager, category: string, tbd: string) => {
     const html = await page.$eval("head", e => e.innerHTML);
     const $ = cheerio.load(html);
     const time = $('meta[property="article:published_time"]').attr("content");
-
+    const description = $('meta[property="og:description"]')
+      .attr("content")
+      .replace(/ +/g, " ")
+      .trim();
     let post = new PostOkky();
     post.name = $('meta[property="dable:author"]').attr("content");
     post.title = $('meta[property="og:title"]')
       .attr("content")
       .replace("OKKY | ", "")
       .trim();
-    post.description = $('meta[property="og:description"]')
-      .attr("content")
-      .replace(/ +/g, " ")
-      .trim();
+    post.description = ellipsisString(description, 180);
     post.url = $('meta[property="og:url"]').attr("content");
     post.writed_at = moment(time)
       .subtract("9", "hour")
@@ -72,15 +74,15 @@ const okky = txfn(async (em: EntityManager) => {
     .subtract(1, "day")
     .format("YYYYMMDD");
 
-  const pr = await em
+  const isParsed = await em
     .createQueryBuilder()
-    .from(ParsingReport, "parsing_report")
-    .where(`standard_date=:standard_date AND platform = 'OKKY'`, {
+    .from(ReportParsing, "report_parsing")
+    .where(`standard_date=:standard_date AND platform = 'okky'`, {
       standard_date: tbd
     })
-    .getOne();
+    .getRawOne();
 
-  if (pr) {
+  if (isParsed) {
     return;
   }
 
@@ -88,12 +90,12 @@ const okky = txfn(async (em: EntityManager) => {
   count += await parsing(em, "community", tbd);
   count += await parsing(em, "questions", tbd);
 
-  let parsingReport = new ParsingReport();
-  parsingReport.platform = "OKKY";
-  parsingReport.row = count;
-  parsingReport.standard_date = tbd;
+  let reportParsing = new ReportParsing();
+  reportParsing.platform = "okky";
+  reportParsing.row = count;
+  reportParsing.standard_date = tbd;
 
-  await em.save(parsingReport);
+  await em.save(reportParsing);
 });
 
 export default okky;

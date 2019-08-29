@@ -47,10 +47,12 @@
     "node-cron": "^2.0.3",
     "puppeteer": "^1.19.0",
     "reflect-metadata": "^0.1.13",
+    "rss-parser": "^3.7.2",
     "sql.js": "^1.0.0",
     "supertest": "^4.0.2",
     "typeorm": "^0.2.18",
     "winston": "^3.2.1",
-    "winston-daily-rotate-file": "^3.10.0"
+    "winston-daily-rotate-file": "^3.10.0",
+    "xml-js": "^1.6.11"
   }
 }

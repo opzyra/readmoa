@@ -4,10 +4,11 @@ import moment from "moment";
 import axios from "axios";
 import { EntityManager } from "typeorm";
 
-import PostVelog from "../model/PostVelog";
 import { txfn } from "../core/txManager";
-import markdownParser from "../lib/markdownParser";
-import ParsingReport from "../model/ParsingReport";
+import { ellipsisString, markdownParser } from "../lib/utils";
+
+import PostVelog from "../model/PostVelog";
+import ReportParsing from "../model/ReportParsing";
 
 const parsing = async (em: EntityManager, tbd: string) => {
   const domain = "https://velog.io";
@@ -52,7 +53,7 @@ const parsing = async (em: EntityManager, tbd: string) => {
       let post = new PostVelog();
       post.name = data.user.display_name;
       post.title = data.title;
-      post.description = markdownParser(data.body);
+      post.description = ellipsisString(markdownParser(data.body), 180);
       post.url = `https://velog.io${encodeURI(list[i])}`;
       post.writed_at = moment(data.created_at)
         .subtract("9", "hour")
@@ -73,26 +74,26 @@ const velog = txfn(async (em: EntityManager) => {
     .subtract(1, "day")
     .format("YYYYMMDD");
 
-  const pr = await em
+  const isParsed = await em
     .createQueryBuilder()
-    .from(ParsingReport, "parsing_report")
-    .where(`standard_date=:standard_date AND platform = 'VELOG'`, {
+    .from(ReportParsing, "report_parsing")
+    .where(`standard_date=:standard_date AND platform = 'velog'`, {
       standard_date: tbd
     })
-    .getOne();
+    .getRawOne();
 
-  if (pr) {
+  if (isParsed) {
     return;
   }
   let count = 0;
   count = await parsing(em, tbd);
 
-  let parsingReport = new ParsingReport();
-  parsingReport.platform = "VELOG";
-  parsingReport.row = count;
-  parsingReport.standard_date = tbd;
+  let reportParsing = new ReportParsing();
+  reportParsing.platform = "velog";
+  reportParsing.row = count;
+  reportParsing.standard_date = tbd;
 
-  await em.save(parsingReport);
+  await em.save(reportParsing);
 });
 
 export default velog;
