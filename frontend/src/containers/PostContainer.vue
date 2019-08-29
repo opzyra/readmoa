@@ -1,6 +1,7 @@
 <template>
-  <PostContainerBlock ref="ctx">
+  <PostContainerBlock>
     <PostList :posts="posts" />
+    <PostNoItem v-if="isNoItem" />
   </PostContainerBlock>
 </template>
 
@@ -13,6 +14,7 @@ import browser from "../lib/browser";
 import postsApi from "../lib/api/posts";
 
 import PostList from "@/components/post/PostList.vue";
+import PostNoItem from "@/components/post/PostNoItem.vue";
 
 const PostContainerBlock = styled.main`
   margin-left: 112px;
@@ -22,15 +24,17 @@ const PostContainerBlock = styled.main`
 @Component({
   components: {
     PostContainerBlock,
-    PostList
+    PostList,
+    PostNoItem
   }
 })
 export default class PostContainer extends Vue {
   platform!: string;
   posts: Array<Object> = [];
   isNext: boolean = true;
+  isNoItem: boolean = false;
   skip: number = 0;
-  scrollFnc: any = _.debounce(() => {
+  scroll: any = _.debounce(() => {
     const scrollTop = browser.getScrollTop();
     const { scrollHeight } = document.body;
     const { innerHeight } = window;
@@ -43,13 +47,15 @@ export default class PostContainer extends Vue {
   async created() {
     const { platform } = this.$route.params;
     this.platform = platform;
-    this.featchPosts();
+    this.featchPosts().finally(() => {
+      if (this.posts.length == 0) this.isNoItem = true;
+    });
 
-    window.addEventListener("scroll", this.scrollFnc);
+    window.addEventListener("scroll", this.scroll);
   }
 
-  destoryed() {
-    window.removeEventListener("scroll", this.scrollFnc);
+  destroyed() {
+    window.removeEventListener("scroll", this.scroll);
   }
 
   async featchPosts() {
