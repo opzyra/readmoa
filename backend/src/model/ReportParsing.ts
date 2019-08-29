@@ -5,8 +5,8 @@ import {
   CreateDateColumn
 } from "typeorm";
 
-@Entity("parsing_report")
-export default class ParsingReport {
+@Entity("report_parsing")
+export default class ReportParsing {
   @PrimaryGeneratedColumn()
   idx!: number;
 
