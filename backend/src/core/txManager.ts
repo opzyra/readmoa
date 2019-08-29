@@ -2,7 +2,7 @@ import { getConnection } from "typeorm";
 import { Request, Response, NextFunction } from "express";
 import logger from "./logger";
 
-const txrt = (fn: Function) => {
+export const txrt = (fn: Function) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     const qrn = getConnection().createQueryRunner();
     const em = qrn.manager;
@@ -24,7 +24,7 @@ const txrt = (fn: Function) => {
   };
 };
 
-const txfn = (fn: Function) => {
+export const txfn = (fn: Function) => {
   return async () => {
     const qrn = getConnection().createQueryRunner();
     const em = qrn.manager;
@@ -45,5 +45,3 @@ const txfn = (fn: Function) => {
       });
   };
 };
-
-export { txrt, txfn };
