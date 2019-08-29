@@ -12,3 +12,7 @@ declare module "vue-fragment" {
   const x: any;
   export = x;
 }
+
+declare module "axios-progress-bar" {
+  export function loadProgressBar(): void;
+}
