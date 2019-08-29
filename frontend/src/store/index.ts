@@ -13,7 +13,7 @@ export interface IStore {
 
 export default new Vuex.Store<IStore>({
   state: {
-    platforms: ["okky", "velog", "branch"]
+    platforms: ["okky", "velog", "brunch", "tistory", "medium", "github"]
   },
   mutations: {},
   actions: {}
