@@ -12,7 +12,7 @@ import ReportParsing from "../model/ReportParsing";
 
 const parsing = async (em: EntityManager, tbd: string) => {
   const domain = "https://velog.io";
-  const browser = await puppeteer.launch({ headless: true });
+  const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox'] });
   const page = await browser.newPage();
 
   await page.goto(domain + "/recent");

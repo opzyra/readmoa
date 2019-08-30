@@ -15,7 +15,7 @@ import ReportParsing from "../model/ReportParsing";
 const platform = "github";
 
 const parsing = async (em: EntityManager, tbd: string) => {
-  const browser = await puppeteer.launch({ headless: true });
+  const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox'] });
   const page = await browser.newPage();
 
   let parser = new Parser();

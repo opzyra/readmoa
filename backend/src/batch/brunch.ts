@@ -15,7 +15,7 @@ const platform = "brunch";
 
 const parsingTrend = async (em: EntityManager, tbd: string) => {
   const domain = "https://brunch.co.kr/keyword/IT_트렌드?q=g";
-  const browser = await puppeteer.launch({ headless: true });
+  const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox'] });
   const page = await browser.newPage();
 
   await page.goto(domain);

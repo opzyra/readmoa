@@ -13,7 +13,7 @@ const parsing = async (em: EntityManager, category: string, tbd: string) => {
   const domain = "https://okky.kr";
   const target = `${domain}/articles/${category}?offset=0&max=100&sort=id&order=desc`;
 
-  const browser = await puppeteer.launch({ headless: true });
+  const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox'] });
 
   const page = await browser.newPage();
   await page.goto(target);
