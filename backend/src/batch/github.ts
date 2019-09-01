@@ -50,7 +50,7 @@ const parsing = async (em: EntityManager, tbd: string) => {
           post.title = $('meta[property="og:title"]')
             .attr("content")
             .trim();
-          post.description = ellipsisString(description, 180);
+          post.description = ellipsisString(description, 180).trim();
           post.url = url;
           post.writed_at = moment(feedDate).toDate();
 

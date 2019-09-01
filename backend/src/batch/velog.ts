@@ -46,16 +46,16 @@ const parsing = async (em: EntityManager, tbd: string) => {
   for (let i = 0; i < list.length; i++) {
     const api = `https://api.velog.io/posts${encodeURI(list[i])}`;
     const { data } = await axios.get(api);
-    const rd = moment(data.created_at)
+    const rd = moment(data.released_at)
       .utc()
       .format("YYYYMMDD");
     if (tbd == rd) {
       let post = new PostVelog();
       post.name = data.user.display_name;
       post.title = data.title;
-      post.description = ellipsisString(markdownParser(data.body), 180);
+      post.description = ellipsisString(markdownParser(data.body), 180).trim();
       post.url = `https://velog.io${encodeURI(list[i])}`;
-      post.writed_at = moment(data.created_at)
+      post.writed_at = moment(data.released_at)
         .subtract("9", "hour")
         .toDate();
 
