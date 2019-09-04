@@ -5,7 +5,7 @@ const size: any = {
 };
 
 const device = Object.keys(size).reduce((acc: any, cur: any) => {
-  acc[cur] = `(min-width: ${size[cur]}px)`;
+  acc[cur] = `(max-width: ${size[cur]}px)`;
   return acc;
 }, {});
 

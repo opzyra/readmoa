@@ -10,6 +10,8 @@ import { Component, Vue } from "vue-property-decorator";
 import styled from "vue-styled-components";
 import _ from "lodash";
 
+import device from "@/lib/device";
+
 import browser from "../lib/browser";
 import postsApi from "../lib/api/posts";
 
@@ -19,6 +21,11 @@ import PostNoItem from "@/components/post/PostNoItem.vue";
 const PostContainerBlock = styled.main`
   margin-left: 112px;
   padding: 28px;
+
+  @media ${device.mobile} {
+    margin: 108px 0 0 0;
+    padding: 0 8px;
+  }
 `;
 
 @Component({

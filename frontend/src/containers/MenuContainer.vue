@@ -1,16 +1,21 @@
 <template>
-  <SideMenuBlock>
+  <SideMenuBlock :class="isToggled ? 'on' : ''">
     <router-link to="/" tag="a" class="logo">
       <img src="@/assets/images/logo_white.png" alt="logo" />
       <h3>READMOA</h3>
     </router-link>
-    <PlatformList :platforms="platforms" />
+    <span class="bar" @click="toggleMenu">
+      <img src="@/assets/images/bar.png" alt="bar" />
+    </span>
+    <PlatformList :platforms="platforms" :isToggled="isToggled" />
   </SideMenuBlock>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import styled from "vue-styled-components";
+
+import device from "@/lib/device";
 
 import PlatformList from "../components/platform/PlatformList.vue";
 
@@ -25,6 +30,7 @@ const SideMenuBlock = styled.div`
   );
   width: 112px;
   height: 100vh;
+  z-index: 1;
 
   .logo {
     display: block;
@@ -42,6 +48,48 @@ const SideMenuBlock = styled.div`
     color: #fff;
     font-weight: bold;
   }
+
+  .bar {
+    display: none;
+  }
+
+  @media ${device.mobile} {
+    width: 100%;
+    height: 80px;
+
+    &.on {
+      height: 260px;
+    }
+
+    .logo {
+      display: flex;
+      padding: 10px;
+      margin: 0px;
+      vertical-align: middle;
+      align-items: center;
+      width: 50%;
+    }
+
+    .logo img {
+      width: 60px;
+    }
+
+    .logo h3 {
+      font-size: 24px;
+    }
+
+    .bar {
+      display: block;
+      position: absolute;
+      top: 28px;
+      right: 4px;
+      text-align: center;
+      cursor: pointer;
+    }
+    .bar img {
+      width: 40%;
+    }
+  }
 `;
 
 @Component({
@@ -51,9 +99,13 @@ const SideMenuBlock = styled.div`
   }
 })
 export default class SideMenu extends Vue {
+  isToggled: boolean = false;
+
   get platforms() {
     return this.$store.state.platforms;
   }
-  created() {}
+  toggleMenu() {
+    this.isToggled = !this.isToggled;
+  }
 }
 </script>

@@ -10,6 +10,8 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import styled from "vue-styled-components";
 
+import device from "@/lib/device";
+
 const PlatformItemBlock = styled.li`
   a {
     display: block;
@@ -32,6 +34,21 @@ const PlatformItemBlock = styled.li`
 
   a img {
     width: 64px;
+  }
+
+  @media ${device.mobile} {
+    display: inline-block;
+    width: 33%;
+
+    a.on::after {
+      content: " ";
+      height: 4px;
+      width: 64px;
+      bottom: 8px;
+      left: 50%;
+      top: auto;
+      transform: translateX(-50%);
+    }
   }
 `;
 
