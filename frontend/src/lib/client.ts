@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const domain = "http://localhost:3000";
+const domain = process.env.VUE_APP_API;
 
 export default {
   get: async (path: string) => {
