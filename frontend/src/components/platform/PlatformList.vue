@@ -20,6 +20,7 @@ const PlatformListBlock = styled.ul`
 
     &.on {
       display: block;
+      padding: 0 10px;
     }
   }
 `;

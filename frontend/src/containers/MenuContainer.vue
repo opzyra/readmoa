@@ -58,7 +58,7 @@ const SideMenuBlock = styled.div`
     height: 80px;
 
     &.on {
-      height: 260px;
+      height: 176px;
     }
 
     .logo {

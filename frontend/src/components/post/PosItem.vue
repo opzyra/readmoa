@@ -15,6 +15,8 @@
 import { Component, Vue, Prop } from "vue-property-decorator";
 import styled from "vue-styled-components";
 
+import device from "@/lib/device";
+
 import moment from "moment";
 
 const PostItemBlock = styled.li`
@@ -25,6 +27,7 @@ const PostItemBlock = styled.li`
   font-size: initial;
   margin-right: 28px;
   margin-bottom: 28px;
+  box-sizing: border-box;
 
   &:nth-child(3n) {
     margin-right: 0px;
@@ -41,7 +44,6 @@ const PostItemBlock = styled.li`
     border: 1px solid rgba(97, 50, 160, 0.9);
   }
 
-  &:after,
   &:after {
     content: "";
     width: 80px;
@@ -55,7 +57,6 @@ const PostItemBlock = styled.li`
     background: #fff;
   }
 
-  &:hover:after,
   &:hover:after {
     border-left: 1px solid rgba(97, 50, 160, 0.9);
   }
@@ -80,6 +81,58 @@ const PostItemBlock = styled.li`
 
   a div .date {
     margin-left: 4px;
+  }
+
+  @media ${device.desktop} {
+    width: 31.8%;
+
+    a p {
+      height: 180px;
+    }
+  }
+
+  @media ${device.laptop} {
+    width: 48%;
+
+    a p {
+      height: 210px;
+    }
+
+    a h2 {
+      height: 78px;
+    }
+
+    &:nth-child(3n) {
+      margin-right: 28px;
+    }
+
+    &:nth-child(2n) {
+      margin-right: 0px;
+    }
+  }
+
+  @media ${device.mobile} {
+    width: 100%;
+    margin-right: 0px !important;
+    margin-bottom: 20px;
+
+    a {
+      padding: 16px 20px;
+    }
+
+    a h2 {
+      height: auto;
+      min-height: 58;
+    }
+
+    a p {
+      height: auto;
+      min-height: 125px;
+    }
+
+    &:after {
+      display: none;
+    }
   }
 `;
 

@@ -1,7 +1,12 @@
 <template>
   <PostContainerBlock>
     <PostList :posts="posts" />
-    <PostNoItem v-if="isNoItem" />
+    <ErrorInfo v-if="isNoItem">
+      <h3>
+        등록된 포스트가 존재하지 않거나
+        <br />서버와 통신에 실패하였습니다
+      </h3>
+    </ErrorInfo>
   </PostContainerBlock>
 </template>
 
@@ -16,14 +21,14 @@ import browser from "../lib/browser";
 import postsApi from "../lib/api/posts";
 
 import PostList from "@/components/post/PostList.vue";
-import PostNoItem from "@/components/post/PostNoItem.vue";
+import ErrorInfo from "@/components/common/ErrorInfo.vue";
 
 const PostContainerBlock = styled.main`
   margin-left: 112px;
   padding: 28px;
 
   @media ${device.mobile} {
-    margin: 108px 0 0 0;
+    margin: 100px 0 0 0;
     padding: 0 8px;
   }
 `;
@@ -32,7 +37,7 @@ const PostContainerBlock = styled.main`
   components: {
     PostContainerBlock,
     PostList,
-    PostNoItem
+    ErrorInfo
   }
 })
 export default class PostContainer extends Vue {

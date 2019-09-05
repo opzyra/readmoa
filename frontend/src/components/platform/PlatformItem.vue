@@ -38,13 +38,17 @@ const PlatformItemBlock = styled.li`
 
   @media ${device.mobile} {
     display: inline-block;
-    width: 33%;
+    width: 16.5%;
+
+    a img {
+      width: 54px;
+    }
 
     a.on::after {
       content: " ";
       height: 4px;
-      width: 64px;
-      bottom: 8px;
+      width: 54px;
+      bottom: 16px;
       left: 50%;
       top: auto;
       transform: translateX(-50%);
