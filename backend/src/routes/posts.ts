@@ -1,7 +1,9 @@
 import express, { Request, Response, NextFunction } from "express";
 import { EntityManager } from "typeorm";
+import Joi from "@hapi/joi";
 
 import { txrt } from "../core/txManager";
+import { validateQuery } from "../lib/validator";
 
 import PostOkky from "../model/PostOkky";
 import PostVelog from "../model/PostVelog";
@@ -14,6 +16,7 @@ const router = express.Router();
 
 router.get(
   "/okky",
+  validateQuery({ skip: Joi.number().required() }),
   txrt(
     async (
       req: Request,
@@ -42,6 +45,7 @@ router.get(
 
 router.get(
   "/velog",
+  validateQuery({ skip: Joi.number().required() }),
   txrt(
     async (
       req: Request,
@@ -70,6 +74,7 @@ router.get(
 
 router.get(
   "/brunch",
+  validateQuery({ skip: Joi.number().required() }),
   txrt(
     async (
       req: Request,
@@ -98,6 +103,7 @@ router.get(
 
 router.get(
   "/tistory",
+  validateQuery({ skip: Joi.number().required() }),
   txrt(
     async (
       req: Request,
@@ -126,6 +132,7 @@ router.get(
 
 router.get(
   "/github",
+  validateQuery({ skip: Joi.number().required() }),
   txrt(
     async (
       req: Request,
@@ -154,6 +161,7 @@ router.get(
 
 router.get(
   "/medium",
+  validateQuery({ skip: Joi.number().required() }),
   txrt(
     async (
       req: Request,
