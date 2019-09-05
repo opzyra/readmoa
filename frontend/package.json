@@ -21,6 +21,7 @@
     "prerender-spa-plugin": "^3.4.0",
     "reflect-metadata": "^0.1.13",
     "vue": "^2.6.10",
+    "vue-analytics": "^5.17.2",
     "vue-class-component": "^7.0.2",
     "vue-fragment": "^1.5.1",
     "vue-property-decorator": "^8.2.2",
