@@ -16,7 +16,11 @@ import App from "./App.vue";
 
 Vue.use(Fragment.Plugin);
 Vue.use(VueAnalytics, {
-  id: "UA-147153234-1"
+  id: "UA-147153234-1",
+  router,
+  debug: {
+    sendHitTask: true
+  }
 });
 
 Vue.config.productionTip = false;
