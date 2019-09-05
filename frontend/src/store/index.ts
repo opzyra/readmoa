@@ -3,10 +3,6 @@ import Vuex from "vuex";
 
 Vue.use(Vuex);
 
-export const enum Mutations {
-  INCREMENT = "increment"
-}
-
 export interface IStore {
   platforms: Array<string>;
 }
