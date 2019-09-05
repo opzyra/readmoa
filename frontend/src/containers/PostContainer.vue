@@ -63,6 +63,7 @@ export default class PostContainer extends Vue {
       if (this.posts.length == 0) this.isNoItem = true;
     });
 
+    window.scroll({ left: 0, top: 0 });
     window.addEventListener("scroll", this.scroll);
   }
 
