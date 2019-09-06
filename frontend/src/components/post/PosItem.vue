@@ -5,7 +5,8 @@
       <p>{{item.description}}</p>
       <div>
         <span>{{item.name}}</span>
-        <span class="date">{{formatDate(item.writed_at)}}</span>
+        <span class="new" v-if="isNew(item.writed_at)">NEW</span>
+        <span class="date" v-else>{{formatDate(item.writed_at)}}</span>
       </div>
     </a>
   </PostItemBlock>
@@ -83,6 +84,12 @@ const PostItemBlock = styled.li`
     margin-left: 4px;
   }
 
+  a div .new {
+    margin-left: 4px;
+    color: #ab52ae;
+    font-weight: bold;
+  }
+
   @media ${device.desktop} {
     width: 31.8%;
 
@@ -146,7 +153,18 @@ export default class PostItem extends Vue {
   item!: Object;
 
   formatDate(date: Date) {
-    return moment(date).format("YYYY.MM.DD HH:mm");
+    return moment(date).format("YYYY.MM.DD");
+  }
+
+  isNew(date: Date) {
+    const yesterday = moment()
+      .subtract("1", "day")
+      .format("YYYY.MM.DD");
+    const writeDate = this.formatDate(date);
+    if (yesterday == writeDate) {
+      return true;
+    }
+    return false;
   }
 }
 </script>
