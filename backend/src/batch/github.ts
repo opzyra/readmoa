@@ -36,7 +36,10 @@ const parsing = async (em: EntityManager, browser: any, tbd: string) => {
           let url = feedItem.url || feedItem.link;
 
           await page.goto(url);
-          const html = await page.$eval("head", e => e.innerHTML);
+          const html = await page.$eval(
+            "head",
+            (e: { innerHTML: any }) => e.innerHTML
+          );
           const $ = cheerio.load(html);
 
           const description = removeHtml(

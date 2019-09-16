@@ -44,7 +44,10 @@ const parsing = async (
   for (let i = 0; i < list.length; i++) {
     const link = domain + list[i];
     await page.goto(link);
-    const html = await page.$eval("head", e => e.innerHTML);
+    const html = await page.$eval(
+      "head",
+      (e: { innerHTML: any }) => e.innerHTML
+    );
     const $ = cheerio.load(html);
     const time = $('meta[property="article:published_time"]').attr("content");
     const description = $('meta[property="og:description"]')
