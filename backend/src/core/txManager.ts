@@ -1,5 +1,7 @@
 import { getConnection } from "typeorm";
 import { Request, Response, NextFunction } from "express";
+import puppeteer from "puppeteer";
+
 import logger from "./logger";
 
 export const txrt = (fn: Function) => {
@@ -26,13 +28,18 @@ export const txrt = (fn: Function) => {
 
 export const txfn = (fn: Function) => {
   return async () => {
+    const browser = await puppeteer.launch({
+      headless: true,
+      args: ["--no-sandbox", "--disable-setuid-sandbox"]
+    });
+
     const qrn = getConnection().createQueryRunner();
     const em = qrn.manager;
 
     await qrn.connect();
     await qrn.startTransaction();
 
-    fn(em)
+    fn(em, browser)
       .then(async () => {
         await qrn.commitTransaction();
       })
@@ -42,6 +49,7 @@ export const txfn = (fn: Function) => {
       })
       .finally(async () => {
         await qrn.release();
+        await browser.close();
       });
   };
 };

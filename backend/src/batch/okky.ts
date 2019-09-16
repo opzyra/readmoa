@@ -1,4 +1,3 @@
-import puppeteer from "puppeteer";
 import cheerio from "cheerio";
 import moment from "moment";
 import { EntityManager } from "typeorm";
@@ -9,17 +8,20 @@ import { ellipsisString } from "../lib/utils";
 import PostOkky from "../model/PostOkky";
 import ReportParsing from "../model/ReportParsing";
 
-const parsing = async (em: EntityManager, category: string, tbd: string) => {
+const parsing = async (
+  em: EntityManager,
+  browser: any,
+  category: string,
+  tbd: string
+) => {
   const domain = "https://okky.kr";
   const target = `${domain}/articles/${category}?offset=0&max=100&sort=id&order=desc`;
-
-  const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox'] });
 
   const page = await browser.newPage();
   await page.goto(target);
   const html = await page.$eval(
     "#list-article > .panel > .list-group",
-    e => e.innerHTML
+    (e: { innerHTML: any }) => e.innerHTML
   );
 
   let list: Array<string> = [];
@@ -69,7 +71,7 @@ const parsing = async (em: EntityManager, category: string, tbd: string) => {
   return list.length;
 };
 
-const okky = txfn(async (em: EntityManager) => {
+const okky = txfn(async (em: EntityManager, browser: any) => {
   const tbd = moment()
     .subtract(1, "day")
     .format("YYYYMMDD");
@@ -87,8 +89,8 @@ const okky = txfn(async (em: EntityManager) => {
   }
 
   let count = 0;
-  count += await parsing(em, "community", tbd);
-  count += await parsing(em, "questions", tbd);
+  count += await parsing(em, browser, "community", tbd);
+  count += await parsing(em, browser, "questions", tbd);
 
   let reportParsing = new ReportParsing();
   reportParsing.platform = "okky";

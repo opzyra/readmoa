@@ -1,4 +1,3 @@
-import puppeteer from "puppeteer";
 import cheerio from "cheerio";
 import moment from "moment";
 import axios from "axios";
@@ -10,9 +9,8 @@ import { ellipsisString, markdownParser } from "../lib/utils";
 import PostVelog from "../model/PostVelog";
 import ReportParsing from "../model/ReportParsing";
 
-const parsing = async (em: EntityManager, tbd: string) => {
+const parsing = async (em: EntityManager, browser: any, tbd: string) => {
   const domain = "https://velog.io";
-  const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox'] });
   const page = await browser.newPage();
 
   await page.goto(domain + "/recent");
@@ -28,7 +26,10 @@ const parsing = async (em: EntityManager, tbd: string) => {
     await page.waitForFunction(`document.body.scrollHeight > ${height}`);
   }
 
-  const html = await page.$eval(".PostCardList", e => e.innerHTML);
+  const html = await page.$eval(
+    ".PostCardList",
+    (e: { innerHTML: any }) => e.innerHTML
+  );
 
   let list: Array<string> = [];
 
@@ -69,7 +70,7 @@ const parsing = async (em: EntityManager, tbd: string) => {
   return count;
 };
 
-const velog = txfn(async (em: EntityManager) => {
+const velog = txfn(async (em: EntityManager, browser: any) => {
   const tbd = moment()
     .subtract(1, "day")
     .format("YYYYMMDD");
@@ -86,7 +87,7 @@ const velog = txfn(async (em: EntityManager) => {
     return;
   }
   let count = 0;
-  count = await parsing(em, tbd);
+  count = await parsing(em, browser, tbd);
 
   let reportParsing = new ReportParsing();
   reportParsing.platform = "velog";

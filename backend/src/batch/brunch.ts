@@ -1,4 +1,3 @@
-import puppeteer from "puppeteer";
 import axios from "axios";
 import moment from "moment";
 import Parser from "rss-parser";
@@ -13,9 +12,8 @@ import RssPlatform from "../model/RssPlatform";
 
 const platform = "brunch";
 
-const parsingTrend = async (em: EntityManager, tbd: string) => {
+const parsingTrend = async (em: EntityManager, browser: any, tbd: string) => {
   const domain = "https://brunch.co.kr/keyword/IT_트렌드?q=g";
-  const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox'] });
   const page = await browser.newPage();
 
   await page.goto(domain);
@@ -69,7 +67,6 @@ const parsingTrend = async (em: EntityManager, tbd: string) => {
 
 const parsing = async (em: EntityManager, tbd: string) => {
   let parser = new Parser();
-
   let rss = await em.find(RssPlatform, { platform });
 
   let count = 0;
@@ -106,7 +103,7 @@ const parsing = async (em: EntityManager, tbd: string) => {
   return count;
 };
 
-const brunch = txfn(async (em: EntityManager) => {
+const brunch = txfn(async (em: EntityManager, browser: any) => {
   const tbd = moment()
     .subtract(1, "day")
     .format("YYYYMMDD");
@@ -124,7 +121,7 @@ const brunch = txfn(async (em: EntityManager) => {
   }
 
   let count = 0;
-  count += await parsingTrend(em, tbd);
+  count += await parsingTrend(em, browser, tbd);
   count += await parsing(em, tbd);
 
   let reportParsing = new ReportParsing();

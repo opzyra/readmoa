@@ -1,4 +1,3 @@
-import puppeteer from "puppeteer";
 import cheerio from "cheerio";
 import moment from "moment";
 import Parser from "rss-parser";
@@ -14,12 +13,10 @@ import ReportParsing from "../model/ReportParsing";
 
 const platform = "github";
 
-const parsing = async (em: EntityManager, tbd: string) => {
-  const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox'] });
+const parsing = async (em: EntityManager, browser: any, tbd: string) => {
   const page = await browser.newPage();
 
   let parser = new Parser();
-
   let rss = await em.find(RssPlatform, { platform });
 
   let count = 0;
@@ -71,7 +68,7 @@ const parsing = async (em: EntityManager, tbd: string) => {
   return count;
 };
 
-const github = txfn(async (em: EntityManager) => {
+const github = txfn(async (em: EntityManager, browser: any) => {
   const tbd = moment()
     .subtract(1, "day")
     .format("YYYYMMDD");
@@ -89,7 +86,7 @@ const github = txfn(async (em: EntityManager) => {
   }
 
   let count = 0;
-  count += await parsing(em, tbd);
+  count += await parsing(em, browser, tbd);
 
   let reportParsing = new ReportParsing();
   reportParsing.platform = platform;
