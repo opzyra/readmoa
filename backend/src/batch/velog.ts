@@ -65,8 +65,6 @@ const parsing = async (em: EntityManager, browser: any, tbd: string) => {
     }
   }
 
-  await browser.close();
-
   return count;
 };
 
