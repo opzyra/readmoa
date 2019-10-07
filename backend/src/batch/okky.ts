@@ -69,8 +69,6 @@ const parsing = async (
     await em.save(post);
   }
 
-  await browser.close();
-
   return list.length;
 };
 

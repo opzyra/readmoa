@@ -11,7 +11,7 @@ export default class PostOkky {
   @Column({ length: 255 })
   title!: string;
 
-  @Column({ length: 400 })
+  @Column({ type: 'mediumtext' })
   description!: string;
 
   @Column({ length: 500 })
