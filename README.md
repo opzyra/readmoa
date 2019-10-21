@@ -1,7 +1,9 @@
 # Readmoa
 
-**리드모아는 개발 관련된 글들을 모아보는 토이 프로젝트 입니다.**  
 [https://readmoa.com](https://readmoa.com)
+
+**리드모아는 개발 관련된 글들을 모아보는 토이 프로젝트 입니다.**  
+AWS EC2에 배포하였으며 자세한 기술 스택은 아래를 참고해주세요.
 
 ## 기술스택
 
@@ -40,3 +42,4 @@
 ## 연관 포스트
 
 - [토이 프로젝트 시작하기에 앞서 정리하는 글](https://devhyun.com/blog/post/9)
+- [프로젝트 리드모아](https://devhyun.com/blog/post/12)
