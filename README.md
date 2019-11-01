@@ -1,5 +1,7 @@
 # Readmoa
 
+![logo](https://raw.githubusercontent.com/opzyra/readmoa/master/frontend/src/assets/images/logo_color.png)
+
 [https://readmoa.com](https://readmoa.com)
 
 **리드모아는 개발 관련된 글들을 모아보는 토이 프로젝트 입니다.**  
